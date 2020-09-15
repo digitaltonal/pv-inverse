@@ -1,0 +1,66 @@
+TITLE:: PV_Inverse_Exp
+summary::  Invert and Transpose bins
+categories:: Libraries>PV_Inverse, UGens>FFT
+related:: Classes/PV_InvTransp, Classes/PV_Inverse_0,Classes/PV_Inverse_1,Classes/PV_Inverse_2, Classes/PV_Inv,Classes/PV_Transp,Classes/PV_DistrN
+
+
+
+DESCRIPTION::
+Exponantial spectral inversion at the bin freqC and transposition to the bin freqT, by Grégoire Bonnet (2018) - used on Idiom64 [link::https://gregoirebonnet.bandcamp.com/track/idiom64::].
+
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: buffer
+An FFT buffer.
+
+ARGUMENT:: freqC
+Frequency of inversion
+
+ARGUMENT:: freqT
+Frequency of transposition
+
+
+
+
+
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+s.boot;
+
+
+(
+SynthDef("noise-PV_Inverse_Exp", { arg out=0, freqC=440, freqT=440;
+	    var in, chain;
+	    in = WhiteNoise.ar(0.2);
+	    chain = FFT(LocalBuf(2048), in); //try different size
+	    chain = PV_Inverse_Exp(chain, freqC, freqT);
+    Out.ar(out, 0.5 * IFFT(chain).dup);
+}).play(s,[\freqC, 440, \freqT, 660]);
+)
+
+//
+
+b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav");
+
+(
+SynthDef("voice-PV_Inverse_Exp", { arg out=0, soundBufnum=2, freqC=440, freqT=440;
+    var in, chain;
+    in = PlayBuf.ar(1, soundBufnum, BufRateScale.kr(soundBufnum), loop: 1);
+    chain = FFT(LocalBuf(2048), in); //try different size
+	chain = PV_Inverse_Exp(chain, freqC, freqT);
+    Out.ar(out, 0.5 * IFFT(chain).dup);
+}).play(s, [\soundBufnum, b, \freqC, 440, \freqT, 660]);
+)
+
+
+::

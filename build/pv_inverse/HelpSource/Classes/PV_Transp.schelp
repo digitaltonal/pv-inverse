@@ -1,0 +1,63 @@
+TITLE:: PV_Transp
+summary::  Transpose bins
+categories:: Libraries>PV_Inversions, UGens>FFT
+related:: Classes/PV_InvTransp, Classes/PV_Inverse_0, Classes/PV_Inverse_Exp, Classes/PV_Inv
+
+
+
+DESCRIPTION::
+Spectral transposition, by Grégoire Bonnet (2018) - used on Idiom64 [link::https://gregoirebonnet.bandcamp.com/track/idiom64::].
+
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: buffer
+An FFT buffer.
+
+ARGUMENT:: k
+Ratio of transposition
+
+
+
+
+
+
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+s.boot;
+
+
+(
+SynthDef("noise-PV_Transp", { arg out=0, kTransp=1.4;
+	    var in, chain;
+	    in = WhiteNoise.ar(0.2);
+	    chain = FFT(LocalBuf(2048), in);
+	    chain = PV_Transp(chain, kTransp);
+    Out.ar(out, 0.5 * IFFT(chain).dup);
+}).play(s,[\kTransp, 1.5]);
+)
+
+//
+
+b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav");
+
+(
+SynthDef("voice-PV_Transp", { arg out=0, soundBufnum=2, kTransp = 1.3 ;
+    var in, chain;
+    in = PlayBuf.ar(1, soundBufnum, BufRateScale.kr(soundBufnum), loop: 1);
+    chain = FFT(LocalBuf(2048), in);
+	chain = PV_Transp(chain, kTransp);
+    Out.ar(out, 0.5 * IFFT(chain).dup);
+}).play(s, [\soundBufnum, b, \kTransp, 1.5]);
+)
+
+
+::
