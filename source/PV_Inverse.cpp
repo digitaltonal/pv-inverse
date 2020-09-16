@@ -20,6 +20,13 @@
 
 
 
+/*
+PV_Inverse Plugin for SuperCollider,
+FFT spectral inversion.
+© Designed by Grégoire Bonnet, 2018
+*/
+
+
 #include "FFT_UGens.h"
 
 
