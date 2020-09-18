@@ -7,7 +7,7 @@ Look at **fft-inverse-logs.scd** to understand the way it works. You can find a 
 
 ### Source 
 
-To build the *source* please refer to the [SC3-Plugins](https://github.com/supercollider/sc3-plugins) explanations.
+To compile and build the *source* please refer to the [SC3-Plugins](https://github.com/supercollider/sc3-plugins) explanations.
 
 
 ### Build 
